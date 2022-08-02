@@ -13,6 +13,15 @@ module MatheFoodApi
 
     # Configuration for the application, engines, and railties goes here.
     #
+
+    # Adding cookies and session middleware
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
+
+    # Use SameSite=Strict for all cookies to help protect against CSRF
+    # https://owasp.org/www-community/SameSite
+    config.action_dispatch.cookies_same_site_protection = :strict
+
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
