@@ -8,15 +8,17 @@ Bundler.require(*Rails.groups)
 
 module MatheFoodApi
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+  
 
     # Configuration for the application, engines, and railties goes here.
     #
 
     # Adding cookies and session middleware
-    config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
+    # config.middleware.use ActionDispatch::Cookies
+    # config.middleware.use ActionDispatch::Session::CookieStore
+
+      # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 7.0
 
     # Use SameSite=Strict for all cookies to help protect against CSRF
     # https://owasp.org/www-community/SameSite
