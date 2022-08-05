@@ -3,10 +3,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  get "/order", to: "orders#show"
   post "/signup", to: "users#create"
-  get "/products", to: "products#index"
   post "/login", to: "sessions#create"
   get "/me", to: "users#show"
   delete "/logout", to: "sessions#destroy"
-  resources :restaurants, only: [:index, :create]
+  delete "/products/:id", to: "products#destroy"
+  resources :products, only: [:index, :create]
+  resources :orders, only: [:index, :create, :show]
 end

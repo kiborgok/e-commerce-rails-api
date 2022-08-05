@@ -1,22 +1,32 @@
 class ProductsController < ApplicationController
-    skip_before_action :authorize, only: [:index, :create]
+    skip_before_action :authorize, only: [:index, :create, :destroy]
     def index
-        restaurants = Restaurant.all
-        render json: restaurants
+        products = Product.all
+        render json: products
     end
 
     def create
-        restaurant = Restaurant.create(restaurant_params)
-        if restaurant.valid?
-            render json: restaurant, status: :created
+        product = Product.create(product_params)
+        if product.valid?
+            render json: product, status: :created
         else
-            render json: { errors: restaurant.errors.full_messages }, status: :unprocessable_entity
+            render json: { errors: product.errors.full_messages }, status: :unprocessable_entity
+        end
+    end
+
+    def destroy
+        product = Product.find_by(id: params[:id])
+        if product
+            product.destroy
+            head :no_content
+        else
+            render json: { error: "product not found" }, status: :not_found
         end
     end
 
     private
 
-    def restaurant_params
-        params.permit(:name, :location, :imageSrc)
+    def product_params
+        params.permit(:name, :description, :price, :imageSrc)
     end
 end
