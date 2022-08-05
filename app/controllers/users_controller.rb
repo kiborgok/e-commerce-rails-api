@@ -5,8 +5,9 @@ class UsersController < ApplicationController
     def create
         user = User.create(user_params)
         if user.valid?
-            session[:user_id] = user.id
-            render json: user, status: :created
+            payload = {user_id: user.id, email: user.email}
+            token = encode_token(payload)
+            render json: {token: token}, status: :created
         else
             render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
@@ -18,7 +19,12 @@ class UsersController < ApplicationController
 
     private
 
+    def encode_token(payload)
+        # don't forget to hide your secret in an environment variable
+        JWT.encode(payload, 'my_s3cr3t')
+    end
+
     def user_params
-        params.permit(:username, :email, :phone, :password, :password_confirmation)
+        params.permit(:username, :email, :password, :password_confirmation)
     end
 end
