@@ -1,6 +1,6 @@
-require "uri"
-require "net/http"
-require "base64"
+# require "uri"
+# require "net/http"
+# require "base64"
 class OrdersController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     skip_before_action :authorize, only: [:index, :create, :show]
