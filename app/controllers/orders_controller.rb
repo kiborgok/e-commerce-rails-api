@@ -10,7 +10,7 @@ class OrdersController < ApplicationController
         url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
 
         https = Net::HTTP.new(url.host, url.port);
-        https.use_ssl = false
+        https.use_ssl = true
 
         request = Net::HTTP::Post.new(url)
         request["Authorization"] = "Bearer bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
