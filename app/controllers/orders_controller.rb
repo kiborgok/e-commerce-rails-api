@@ -1,6 +1,5 @@
-# require "uri"
-# require "net/http"
-# require "base64"
+require "uri"
+require "net/http"
 class OrdersController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     skip_before_action :authorize, only: [:index, :create, :show]
@@ -8,16 +7,13 @@ class OrdersController < ApplicationController
     def index
         # orders = Order.all
         # render json: orders, include: user, status: ok
-        consumer_key = 'lGKZrbQ0qCb8WABGHCyEFSKzik8x6R4j';
-        consumer_secret = 'NJDbFf9npCoLnyLS';
-        auth = Base64.encode64(consumer_key +':'+ consumer_secret);
         url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
 
         https = Net::HTTP.new(url.host, url.port);
         https.use_ssl = true
 
-        request = Net::HTTP::Post.new(url)
-        request["Authorization"] = "Bearer " + auth
+        request = Net::HTTP::Get.new(url)
+        request["Authorization"] = "Bearer bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
 
         response = https.request(request)
         render json: {data: response.read_body}
