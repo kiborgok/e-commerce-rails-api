@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  get "/access_token", to: "orders#index"
   get "/order", to: "orders#show"
   post "/signup", to: "users#create"
   post "/login", to: "sessions#create"

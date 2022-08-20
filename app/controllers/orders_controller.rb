@@ -1,10 +1,22 @@
+require "uri"
+require "net/http"
 class OrdersController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     skip_before_action :authorize, only: [:index, :create, :show]
 
     def index
-        orders = Order.all
-        render json: orders, include: user, status: ok
+        # orders = Order.all
+        # render json: orders, include: user, status: ok
+        url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
+
+        https = Net::HTTP.new(url.host, url.port);
+        https.use_ssl = false
+
+        request = Net::HTTP::Post.new(url)
+        request["Authorization"] = "Bearer bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
+
+        response = https.request(request)
+        render json: response.read_body
     end
 
     def create
