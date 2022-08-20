@@ -7,16 +7,19 @@ class OrdersController < ApplicationController
     def index
         # orders = Order.all
         # render json: orders, include: user, status: ok
+        consumer_key = 'lGKZrbQ0qCb8WABGHCyEFSKzik8x6R4j';
+        consumer_secret = 'NJDbFf9npCoLnyLS';
+        auth = base64_encode(consumer_key +':'+ consumer_secret);
         url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
 
         https = Net::HTTP.new(url.host, url.port);
         https.use_ssl = true
 
         request = Net::HTTP::Post.new(url)
-        request["Authorization"] = "Bearer bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
+        request["Authorization"] = "Bearer " + auth
 
         response = https.request(request)
-        render json: {data: response}
+        render json: {data: response.read_body}
     end
 
     def create
