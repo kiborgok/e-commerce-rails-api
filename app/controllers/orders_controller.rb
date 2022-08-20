@@ -16,7 +16,7 @@ class OrdersController < ApplicationController
         request["Authorization"] = "Bearer bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
 
         response = https.request(request)
-        render json: {data: response.read_body}
+        render json: {data: response}
     end
 
     def create
