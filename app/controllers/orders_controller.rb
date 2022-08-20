@@ -1,5 +1,6 @@
 require "uri"
 require "net/http"
+require "base64"
 class OrdersController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     skip_before_action :authorize, only: [:index, :create, :show]
@@ -13,7 +14,7 @@ class OrdersController < ApplicationController
         https.use_ssl = true
 
         request = Net::HTTP::Get.new(url)
-        request["Authorization"] = "Bearer bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
+        request["Authorization"] = "Bearer "+ Base64.encode64("lGKZrbQ0qCb8WABGHCyEFSKzik8x6R4j:NJDbFf9npCoLnyLS")
 
         response = https.request(request)
         render json: response.read_body
