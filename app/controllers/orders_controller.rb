@@ -26,7 +26,9 @@ class OrdersController < ApplicationController
             "PartyA": 254708374149,
             "PartyB": 174379,
             "PhoneNumber": 254710392014,
-            "CallBackURL": "https://myd"
+            "CallBackURL": "https://mathe-food-api.herokuapp.com/orders",
+            "AccountReference": "CompanyXLTD",
+            "TransactionDesc": "Payment of X"
         }
 
         response = https.request(request)
@@ -41,6 +43,10 @@ class OrdersController < ApplicationController
             render json: { errors: order.errors.full_messages }, status: :unprocessable_entity
         end
     end
+
+    def response
+
+    end
     
     def show
         order = Order.find(params[:id])
@@ -48,6 +54,7 @@ class OrdersController < ApplicationController
     end
 
     private
+
     def order_params
         params.permit(:name, :email, :location, :phone, :amount, :shipping, :user_id)
     end
