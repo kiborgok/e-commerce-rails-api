@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
         request = Net::HTTP::Post.new(url)
         request["Content-Type"] = "application/json"
         request["Authorization"] = "Bearer rKu8LvWo3bmcFsXxsw1rPfzZnhoX"
-        request.body = {
+        body = {
             "BusinessShortCode": 174379,
             "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjIwODI0MjM1MDIy",
             "Timestamp": "20220824235022",
@@ -31,7 +31,10 @@ class OrdersController < ApplicationController
             "TransactionDesc": "Payment of X"
         }
 
-        response = https.request(request)
+        # response = nhttp.start do |http|
+            post_data = URI.encode_www_form({xml: body})
+            response = https.request(request, post_data)
+        # end
         render json: response
     end
 
