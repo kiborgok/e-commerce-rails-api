@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
         request["Authorization"] = "Basic bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
 
         response = https.request(request)
-        render json: response.read_body
+        render json: response["set-cookie"]
     end
 
     def create
