@@ -8,17 +8,29 @@ class OrdersController < ApplicationController
     def index
         # orders = Order.all
         # render json: orders, include: user, status: ok
-        url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
+        
+        url = URI("https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest")
 
         https = Net::HTTP.new(url.host, url.port);
         https.use_ssl = true
 
-        request = Net::HTTP::Get.new(url)
+        request = Net::HTTP::Post.new(url)
         request["Content-Type"] = "application/json"
-        request["Authorization"] = "Basic bEdLWnJiUTBxQ2I4V0FCR0hDeUVGU0t6aWs4eDZSNGo6TkpEYkZmOW5wQ29MbnlMUw=="
+        request["Authorization"] = "Bearer rKu8LvWo3bmcFsXxsw1rPfzZnhoX"
+        request.body = {
+            "BusinessShortCode": 174379,
+            "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjIwODI0MjM1MDIy",
+            "Timestamp": "20220824235022",
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": 1,
+            "PartyA": 254708374149,
+            "PartyB": 174379,
+            "PhoneNumber": 254710392014,
+            "CallBackURL": "https://myd"
+        }
 
         response = https.request(request)
-        render json: response["set-cookie"]
+        render json: response.read_body
     end
 
     def create
