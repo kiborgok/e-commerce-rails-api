@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
         }
 
         response = https.request(request)
-        render json: response.read_body
+        render json: response
     end
 
     def create
