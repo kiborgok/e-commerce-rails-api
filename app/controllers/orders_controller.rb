@@ -44,7 +44,7 @@ class OrdersController < ApplicationController
         request = Net::HTTP::Post.new(url)
         response = https.request(request)
         data=JSON.parse(response.body)
-        render json: data
+        puts json: data
     end
 
     def create
