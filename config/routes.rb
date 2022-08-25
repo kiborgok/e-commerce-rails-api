@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :create]
   resources :orders, only: [:index, :create, :show]
 
-  post "/orders/result", to: "orders#result"
+  post "/result", to: "orders#result"
 end

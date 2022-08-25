@@ -27,14 +27,15 @@ class OrdersController < ApplicationController
             "PartyA": 254706941217,
             "PartyB": 174379,
             "PhoneNumber": 254706941217,
-            "CallBackURL": "https://mathe-food-api.herokuapp.com/orders/result",
+            "CallBackURL": "https://mathe-food-api.herokuapp.com/result",
             "AccountReference": "Test",
             "TransactionDesc": "Payment test" 
         }.to_json
 
         response = https.request(request)
         
-        render json: response.body
+        # render json: response.body
+        redirect_back_or_to "https://mathe-food-api.herokuapp.com/result", allow_other_host: false
     end
 
     def result
