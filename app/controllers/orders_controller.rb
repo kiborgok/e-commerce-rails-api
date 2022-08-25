@@ -27,28 +27,13 @@ class OrdersController < ApplicationController
             "PartyA": 254706941217,
             "PartyB": 174379,
             "PhoneNumber": 254706941217,
-            "CallBackURL": "https://mathe-food-api.herokuapp.com/result",
+            "CallBackURL": "https://mathe-food-api.herokuapp.com/mpesa/lipa-na-mpesa-callback",
             "AccountReference": "Test",
             "TransactionDesc": "Payment test" 
         }.to_json
 
         response = https.request(request)
-        
-        # render json: response.body
-        redirect_back_or_to "https://mathe-food-api.herokuapp.com/result", allow_other_host: false
-    end
-
-    def result
-        url = URI("https://mathe-food-api.herokuapp.com/result")
-        
-        https = Net::HTTP.new(url.host, url.port);
-        https.use_ssl = true
-
-        request = Net::HTTP::Post.new(url)
-        request["Content-Type"] = "application/json"
-        response = https.request(request)
-        data=JSON.parse(response.body)
-        render data
+        render json: response.body
     end
 
     def create
@@ -68,12 +53,12 @@ class OrdersController < ApplicationController
     private
 
     # def callback_url
-    #     url = URI("https://13e5-102-140-225-96.ngrok.io/result")
+    #     url = URI("https://3702-102-140-225-96.ngrok.io/orders")
         
     #     https = Net::HTTP.new(url.host, url.port);
     #     https.use_ssl = true
 
-    #     request = Net::HTTP::Post.new(url)
+    #     request = Net::HTTP::Get.new(url)
     #     request["Content-Type"] = "application/json"
     #     response = https.request(request)
     #     data=JSON.parse(response.body)
@@ -87,7 +72,7 @@ class OrdersController < ApplicationController
         https.use_ssl = true
 
         request = Net::HTTP::Get.new(url)
-        enc = Base64.strict_encode64('FlXgYqFjXmFvJCTpdHcX4ONF4zzBGuFN:KkYSoGYtEEkDPRre')
+        enc = Base64.strict_encode64('fdkIze6JyJNzrStsbLabCZNdqnvoJ1OV:JsELP1GX9ugPNUkt')
         request["Authorization"] = "Basic #{enc}"
         response = https.request(request)
 
