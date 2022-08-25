@@ -39,6 +39,16 @@ class OrdersController < ApplicationController
     end
 
     def result
+        url = URI("https://mathe-food-api.herokuapp.com/result")
+        
+        https = Net::HTTP.new(url.host, url.port);
+        https.use_ssl = true
+
+        request = Net::HTTP::Post.new(url)
+        request["Content-Type"] = "application/json"
+        response = https.request(request)
+        data=JSON.parse(response.body)
+        render data
     end
 
     def create
