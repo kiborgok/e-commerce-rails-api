@@ -27,13 +27,24 @@ class OrdersController < ApplicationController
             "PartyA": 254706941217,
             "PartyB": 174379,
             "PhoneNumber": 254706941217,
-            "CallBackURL": "https://mathe-food-api.herokuapp.com/mpesa/lipa-na-mpesa-callback",
+            "CallBackURL": "https://mathe-food-api.herokuapp.com/mpesa_callback",
             "AccountReference": "Test",
             "TransactionDesc": "Payment test" 
         }.to_json
 
         response = https.request(request)
-        redirect_to "https://mathe-food-api.herokuapp.com/mpesa/lipa-na-mpesa-callback"
+        render json: response.body
+    end
+
+    def mpesa_callback
+        url = "https://mathe-food-api.herokuapp.com/mpesa_callback"
+        https = Net::HTTP.new(url.host, url.port);
+        https.use_ssl = true
+
+        request = Net::HTTP::Post.new(url)
+        response = https.request(request)
+        data=JSON.parse(response.body)
+        data
     end
 
     def create
@@ -51,19 +62,6 @@ class OrdersController < ApplicationController
     end
 
     private
-
-    # def callback_url
-    #     url = URI("https://3702-102-140-225-96.ngrok.io/orders")
-        
-    #     https = Net::HTTP.new(url.host, url.port);
-    #     https.use_ssl = true
-
-    #     request = Net::HTTP::Get.new(url)
-    #     request["Content-Type"] = "application/json"
-    #     response = https.request(request)
-    #     data=JSON.parse(response.body)
-    #     data
-    # end
 
     def get_access_token
         url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")

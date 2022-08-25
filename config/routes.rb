@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :create]
   resources :orders, only: [:index, :create, :show]
 
-  post "/result", to: "orders#result"
+  post "/mpesa_callback", to: "orders#mpesa_callback"
 end
