@@ -33,7 +33,7 @@ class OrdersController < ApplicationController
         }.to_json
 
         response = https.request(request)
-        render json: response.body
+        redirect_to "https://mathe-food-api.herokuapp.com/mpesa/lipa-na-mpesa-callback"
     end
 
     def create
