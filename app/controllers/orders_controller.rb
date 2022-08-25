@@ -1,41 +1,43 @@
 require "uri"
 require "net/http"
-# require "base64"
+require "base64"
 class OrdersController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
     skip_before_action :authorize, only: [:index, :create, :show]
 
     def index
-        # orders = Order.all
-        # render json: orders, include: user, status: ok
+        token = get_access_token
         
         url = URI("https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest")
-
+        
         https = Net::HTTP.new(url.host, url.port);
         https.use_ssl = true
-
+        
         request = Net::HTTP::Post.new(url)
+        request["Authorization"] = "Bearer #{token}"
         request["Content-Type"] = "application/json"
-        request["Authorization"] = "Bearer rKu8LvWo3bmcFsXxsw1rPfzZnhoX"
-        body = {
+
+        password = Base64.strict_encode64("174379bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919#{Time.now.strftime "%Y%m%d%H%M%S"}")
+        request.body = {
             "BusinessShortCode": 174379,
-            "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjIwODI0MjM1MDIy",
-            "Timestamp": "20220824235022",
+            "Password": password,
+            "Timestamp": "#{Time.now.strftime "%Y%m%d%H%M%S"}",
             "TransactionType": "CustomerPayBillOnline",
             "Amount": 1,
-            "PartyA": 254708374149,
+            "PartyA": 254706941217,
             "PartyB": 174379,
-            "PhoneNumber": 254710392014,
-            "CallBackURL": "https://mathe-food-api.herokuapp.com/orders",
-            "AccountReference": "CompanyXLTD",
-            "TransactionDesc": "Payment of X"
-        }
+            "PhoneNumber": 254706941217,
+            "CallBackURL": "https://mathe-food-api.herokuapp.com/orders/result",
+            "AccountReference": "Test",
+            "TransactionDesc": "Payment test" 
+        }.to_json
 
-        # response = nhttp.start do |http|
-            post_data = URI.encode_www_form({xml: body})
-            response = https.request(request, post_data)
-        # end
-        render json: response
+        response = https.request(request)
+        
+        render json: response.body
+    end
+
+    def result
     end
 
     def create
@@ -46,10 +48,6 @@ class OrdersController < ApplicationController
             render json: { errors: order.errors.full_messages }, status: :unprocessable_entity
         end
     end
-
-    def response
-
-    end
     
     def show
         order = Order.find(params[:id])
@@ -57,6 +55,34 @@ class OrdersController < ApplicationController
     end
 
     private
+
+    # def callback_url
+    #     url = URI("https://13e5-102-140-225-96.ngrok.io/result")
+        
+    #     https = Net::HTTP.new(url.host, url.port);
+    #     https.use_ssl = true
+
+    #     request = Net::HTTP::Post.new(url)
+    #     request["Content-Type"] = "application/json"
+    #     response = https.request(request)
+    #     data=JSON.parse(response.body)
+    #     data
+    # end
+
+    def get_access_token
+        url = URI("https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials")
+        
+        https = Net::HTTP.new(url.host, url.port);
+        https.use_ssl = true
+
+        request = Net::HTTP::Get.new(url)
+        enc = Base64.strict_encode64('FlXgYqFjXmFvJCTpdHcX4ONF4zzBGuFN:KkYSoGYtEEkDPRre')
+        request["Authorization"] = "Basic #{enc}"
+        response = https.request(request)
+
+        data=JSON.parse(response.body)
+        data['access_token']
+    end
 
     def order_params
         params.permit(:name, :email, :location, :phone, :amount, :shipping, :user_id)

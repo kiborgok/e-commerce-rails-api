@@ -3,9 +3,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
-  get "/access_token", to: "orders#index"
-  get "/stk_response", to: "orders#response"
-  get "/order", to: "orders#show"
+
+
   post "/signup", to: "users#create"
   post "/login", to: "sessions#create"
   get "/me", to: "users#show"
@@ -13,4 +12,6 @@ Rails.application.routes.draw do
   delete "/products/:id", to: "products#destroy"
   resources :products, only: [:index, :create]
   resources :orders, only: [:index, :create, :show]
+
+  post "/orders/result", to: "orders#result"
 end
