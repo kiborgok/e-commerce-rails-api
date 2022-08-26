@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
         request["Authorization"] = "Bearer #{token}"
         request["Content-Type"] = "application/json"
 
-        password = Base64.strict_encode64("174379bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919#{Time.now.strftime "%Y%m%d%H%M%S"}")
+        password = Base64.strict_encode64("BUSINESS_SHORT_CODE+PASS_KEY#{Time.now.strftime "%Y%m%d%H%M%S"}")
         request.body = {
             "BusinessShortCode": 174379,
             "Password": password,
@@ -63,7 +63,7 @@ class OrdersController < ApplicationController
         https.use_ssl = true
 
         request = Net::HTTP::Get.new(url)
-        enc = Base64.strict_encode64('fdkIze6JyJNzrStsbLabCZNdqnvoJ1OV:JsELP1GX9ugPNUkt')
+        enc = Base64.strict_encode64('CONSUMER_KEY:SECRET_KEY')
         request["Authorization"] = "Basic #{enc}"
         response = https.request(request)
 
