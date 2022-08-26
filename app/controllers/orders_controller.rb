@@ -37,7 +37,7 @@ class OrdersController < ApplicationController
     end
 
     def mpesa_callback
-        render json: params[:Body]
+        render json: params[:Body].to_json
     end
 
     def create
