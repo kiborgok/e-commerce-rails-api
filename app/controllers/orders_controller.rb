@@ -37,14 +37,7 @@ class OrdersController < ApplicationController
     end
 
     def mpesa_callback
-        # url = "https://mathe-food-api.herokuapp.com/mpesa_callback"
-        # https = Net::HTTP.new(url.host, url.port);
-        # https.use_ssl = true
-
-        # request = Net::HTTP::Post.new(url)
-        # response = https.request(request)
-        # data=JSON.parse(response.body)
-        puts json: {data: "hello"}
+        puts json: params[:Body]
     end
 
     def create
